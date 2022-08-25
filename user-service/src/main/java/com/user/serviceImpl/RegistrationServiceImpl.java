@@ -78,7 +78,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         if (userEntity.isPresent()) {
             UserEntity userEntity1 = userEntity.get();
             if (userEntity1.getPassword().equalsIgnoreCase(password)) {
-                userEntity1.setActive(true);
+                userEntity1.setActive(Boolean.TRUE);
                 userRepository.save(userEntity1);
                 map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
                 map.put(ResponseMessage.MESSAGE, ResponseMessage.USER_VERIFICATION_SUCCESS);

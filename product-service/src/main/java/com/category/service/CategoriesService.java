@@ -13,4 +13,6 @@ public interface CategoriesService {
     Map<String,Object> uploadCategoryImage(Long cId, MultipartFile multipartFile);
 
     Map<String,Object> deleteCategoriesById(Long cId);
+
+    Map<String,Object> updateIsactive(Long cId);
 }

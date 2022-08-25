@@ -1,6 +1,6 @@
 package com.category.serviceImpl;
 
-import com.category.DTO;
+import com.category.DTO.ResponseMessage;
 import com.category.entity.CategoryEntity;
 import com.category.repository.CategoriesRepo;
 import com.category.service.CategoriesService;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,11 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Override
     public Map<String, Object> save(CategoryEntity categoryEntity) {
         Map<String, Object> map = new HashMap<>();
+        CategoryEntity saveNewUser = new CategoryEntity();
         if (categoryEntity != null) {
+            saveNewUser.setCategoryName(categoryEntity.getCategoryName());
+            saveNewUser.setIsActive(Boolean.TRUE);
+            saveNewUser.setCreatedAt(LocalDateTime.now());
             categoriesRepo.save(categoryEntity);
             map.put("status", "200");
             map.put("message", "data saved successfully");
@@ -57,22 +62,23 @@ public class CategoriesServiceImpl implements CategoriesService {
     public Map<String, Object> uploadCategoryImage(Long cId, MultipartFile multipartFile) {
         Map<String, Object> map = new HashMap<String, Object>();
         CategoryEntity categoryImg = categoriesRepo.findById(cId).get();
-        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap("cloud_name", DTO.CLOUD_NAME,
-                "api_key", DTO.API_KEY, "api_secret", DTO.API_SECRET));
+        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap("cloud_name", ResponseMessage.CLOUD_NAME,
+                "api_key", ResponseMessage.API_KEY, "api_secret", ResponseMessage.API_SECRET));
         System.out.println("image sent successfully");
         try {
             Map uploadResult = cloudinary.uploader().upload(multipartFile.getBytes(),
                     ObjectUtils.asMap("public_id", "category_profile/" + cId));
             String url = uploadResult.get("url").toString();
             categoryImg.setCategoryImg(url);
+            categoryImg.setUpdatedAt(LocalDateTime.now());
             categoriesRepo.save(categoryImg);
-            map.put(DTO.RESPONSE_STATUS, DTO.STATUS_200);
-            map.put(DTO.RESPONSE_DATA, url);
-            map.put(DTO.RESPONSE_MESSAGE, DTO.PROFILE_UPLOADED_SUCESSFULLY);
+            map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
+            map.put(ResponseMessage.RESPONSE_DATA, url);
+            map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.PROFILE_UPLOADED_SUCESSFULLY);
         } catch (Exception e) {
             e.printStackTrace();
-            map.put(DTO.RESPONSE_STATUS, DTO.STATUS_400);
-            map.put(DTO.RESPONSE_MESSAGE, DTO.SOMETING_WENT_WRONG);
+            map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_400);
+            map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.SOMETING_WENT_WRONG);
         }
         return map;
     }
@@ -81,13 +87,39 @@ public class CategoriesServiceImpl implements CategoriesService {
     public Map<String, Object> deleteCategoriesById(Long cId) {
         Map<String, Object> map = new HashMap<String, Object>();
         Optional<CategoryEntity> existCategory = categoriesRepo.findById(cId);
-        if (existCategory.isPresent()){
+        if (existCategory.isPresent()) {
+            existCategory.get().setIsActive(Boolean.FALSE);
             categoriesRepo.deleteById(cId);
-            map.put(DTO.RESPONSE_STATUS, DTO.STATUS_200);
-            map.put(DTO.RESPONSE_MESSAGE, DTO.DATA_DELETE_SUCCESSFULLY);
-        }else {
-            map.put(DTO.RESPONSE_STATUS, DTO.STATUS_400);
-            map.put(DTO.RESPONSE_MESSAGE, DTO.DATA_NOT_DELETED);
+            map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
+            map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_DELETE_SUCCESSFULLY);
+        } else {
+            map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_400);
+            map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_NOT_DELETED);
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> updateIsactive(Long cId) {
+        Map<String, Object> map = new HashMap<>();
+        Optional<CategoryEntity> existCategoryIsActive = categoriesRepo.findById(cId);
+        if (existCategoryIsActive.isPresent()) {
+            CategoryEntity categoryEntity = existCategoryIsActive.get();
+            if (categoryEntity.getIsActive().equals(Boolean.TRUE)) {
+                categoryEntity.setIsActive(Boolean.FALSE);
+                categoryEntity.setUpdatedAt(LocalDateTime.now());
+            } else {
+                categoryEntity.setIsActive(Boolean.TRUE);
+                categoryEntity.setUpdatedAt(LocalDateTime.now());
+            }
+            categoriesRepo.save(categoryEntity);
+            map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
+            map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.ISACTIVE_UPDATE_SUCCESS);
+            map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
+        } else {
+            map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_400);
+            map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.ISACTIVE_NOT_UPDATE);
+            map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
         }
         return map;
     }

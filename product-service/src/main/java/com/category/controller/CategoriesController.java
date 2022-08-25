@@ -48,10 +48,19 @@ public class CategoriesController {
         }
     }
 
-    @DeleteMapping("deleteCategoriesById")
+    @DeleteMapping("/deleteCategoriesById")
     public ResponseEntity<Map<String,Object>> deleteCategoriesById(@RequestParam("cId") Long cId){
         try {
             return new ResponseEntity<>(categoriesService.deleteCategoriesById(cId), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    @PutMapping("/updateIsactive")
+    public ResponseEntity<Map<String,Object>> updateIsactive(@RequestParam("cId") Long cId){
+        try {
+            return new ResponseEntity<>(categoriesService.updateIsactive(cId), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
