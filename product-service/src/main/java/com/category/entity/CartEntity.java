@@ -12,14 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CartEntity
-{
+public class CartEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long userId;
 
     private String pId;
+    private String productQuantity;
 
     private Boolean isActive;
     private LocalDateTime createdAt;

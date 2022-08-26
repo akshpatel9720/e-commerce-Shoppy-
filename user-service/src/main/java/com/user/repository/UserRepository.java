@@ -16,4 +16,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("SELECT u from UserEntity u where u.isActive = :status order by u.createdDate desc")
     Page<UserEntity> findByStatus(Boolean status, Pageable pageable);
+
 }

@@ -20,6 +20,7 @@ public class CartDTO {
     private Long userId;
 
     private List<String> pId;
+    private String productQuantity;
 
     private Boolean isActive;
     private LocalDateTime createdAt;

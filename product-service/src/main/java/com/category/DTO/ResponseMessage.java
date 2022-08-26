@@ -26,5 +26,6 @@ public class ResponseMessage {
     public static final String DATA_NOT_UPDATED = "data is not updated";
     public static final String PRODUCT_UPLOADED_SUCESSFULLY = "product image update successfully";
     public static final String PRODUCT_NOT_UPLOADED = "product image not uploaded";
+    public static final String ENTER_VALID_DATA = "data is not present ";
 }
 
