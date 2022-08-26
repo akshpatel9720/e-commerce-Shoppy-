@@ -7,4 +7,10 @@ public class ProductException
             super(message);
         }
     }
+
+    public static class SearchHandler extends Throwable {
+        public SearchHandler(String message) {
+            super(message);
+        }
+    }
 }

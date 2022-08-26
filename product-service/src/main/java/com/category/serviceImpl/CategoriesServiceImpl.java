@@ -1,5 +1,6 @@
 package com.category.serviceImpl;
 
+import com.category.DTO.CategoryDTO;
 import com.category.DTO.ResponseMessage;
 import com.category.entity.CategoryEntity;
 import com.category.repository.CategoriesRepo;
@@ -11,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CategoriesServiceImpl implements CategoriesService {
@@ -23,14 +21,14 @@ public class CategoriesServiceImpl implements CategoriesService {
     CategoriesRepo categoriesRepo;
 
     @Override
-    public Map<String, Object> save(CategoryEntity categoryEntity) {
+    public Map<String, Object> save(CategoryDTO categoryDTO) {
         Map<String, Object> map = new HashMap<>();
         CategoryEntity saveNewUser = new CategoryEntity();
-        if (categoryEntity != null) {
-            saveNewUser.setCategoryName(categoryEntity.getCategoryName());
+        if (categoryDTO != null) {
+            saveNewUser.setCategoryName(categoryDTO.getCategoryName());
             saveNewUser.setIsActive(Boolean.TRUE);
             saveNewUser.setCreatedAt(LocalDateTime.now());
-            categoriesRepo.save(categoryEntity);
+            categoriesRepo.save(saveNewUser);
             map.put("status", "200");
             map.put("message", "data saved successfully");
             map.put("data", new ArrayList<>());
@@ -67,7 +65,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         System.out.println("image sent successfully");
         try {
             Map uploadResult = cloudinary.uploader().upload(multipartFile.getBytes(),
-                    ObjectUtils.asMap("public_id", "category_profile/" + cId));
+                    ObjectUtils.asMap("public_id", "category" + cId));
             String url = uploadResult.get("url").toString();
             categoryImg.setCategoryImg(url);
             categoryImg.setUpdatedAt(LocalDateTime.now());
@@ -119,6 +117,28 @@ public class CategoriesServiceImpl implements CategoriesService {
         } else {
             map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_400);
             map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.ISACTIVE_NOT_UPDATE);
+            map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> search(String Text) {
+        Map<String, Object> map = new HashMap<>();
+        if (!Text.isEmpty()) {
+            List<CategoryEntity> searchdata = categoriesRepo.search(Text);
+            if (!searchdata.isEmpty()) {
+                map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
+                map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.SUCCESS_SEARCH);
+                map.put(ResponseMessage.RESPONSE_DATA, searchdata);
+            } else {
+                map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_400);
+                map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.FAIL_SEARCH);
+                map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
+            }
+        } else {
+            map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_400);
+            map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.FAIL_SEARCH_TEXT_NOT);
             map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
         }
         return map;

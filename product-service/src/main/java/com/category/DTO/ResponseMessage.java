@@ -20,5 +20,11 @@ public class ResponseMessage {
     public static final String DATA_NOT_PRESENT = "data is not present";
     public static final String DATA_SAVED_SUCCESSFULLY = "data saved successfully";
     public static final String DATA_NOT_SAVED = "please enter data";
+    public static final String SUCCESS_SEARCH = "data search succesfully";
+    public static final String FAIL_SEARCH = "data not find";
+    public static final String FAIL_SEARCH_TEXT_NOT = "please enter text for search";
+    public static final String DATA_NOT_UPDATED = "data is not updated";
+    public static final String PRODUCT_UPLOADED_SUCESSFULLY = "product image update successfully";
+    public static final String PRODUCT_NOT_UPLOADED = "product image not uploaded";
 }
 

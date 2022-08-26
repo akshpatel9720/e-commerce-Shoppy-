@@ -1,5 +1,6 @@
 package com.user.controller;
 
+import com.user.DTO.UserDTO;
 import com.user.entity.UserEntity;
 import com.user.exception.UserException;
 import com.user.service.UserService;
@@ -52,6 +53,16 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> updateEmail(@RequestParam("id") Long id, @RequestParam("oldemail") String oldEmail, @RequestParam("newemail") String newEmail) {
         try {
             return new ResponseEntity<>(userService.updateEmail(id, oldEmail, newEmail), HttpStatus.OK);
+        } catch (Exception e) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            throw new UserException.UpdateEamilHandler("data is not update");
+        }
+    }
+
+    @PostMapping("/getUser")
+    public ResponseEntity<Map<String, Object>> getUser(@RequestBody UserDTO userDTO) {
+        try {
+            return new ResponseEntity<>(userService.getUser(userDTO), HttpStatus.OK);
         } catch (Exception e) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new UserException.UpdateEamilHandler("data is not update");

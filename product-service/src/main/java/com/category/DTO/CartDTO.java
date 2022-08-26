@@ -1,28 +1,27 @@
-package com.category.entity;
+package com.category.DTO;
 
+import com.category.entity.ProductEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CartEntity
-{
+public class CartDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long userId;
 
-    private String pId;
+    private List<String> pId;
 
     private Boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
 }

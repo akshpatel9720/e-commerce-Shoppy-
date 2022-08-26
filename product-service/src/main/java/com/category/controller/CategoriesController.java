@@ -1,8 +1,10 @@
 package com.category.controller;
 
+import com.category.DTO.CategoryDTO;
 import com.category.entity.CategoryEntity;
 import com.category.exception.ProductException;
 import com.category.service.CategoriesService;
+import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,9 @@ public class CategoriesController {
     CategoriesService categoriesService;
 
     @PostMapping("/saveCategory")
-    public ResponseEntity<Map<String, Object>> save(@RequestBody CategoryEntity categoryEntity) {
+    public ResponseEntity<Map<String, Object>> save(@RequestBody CategoryDTO categoryDTO) {
         try {
-            return new ResponseEntity<>(categoriesService.save(categoryEntity), HttpStatus.OK);
+            return new ResponseEntity<>(categoriesService.save(categoryDTO), HttpStatus.OK);
         } catch (Exception e) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new ProductException.HandleException("");
@@ -65,4 +67,16 @@ public class CategoriesController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
+    @GetMapping("/searchCategory")
+    public ResponseEntity<Map<String, Object>> search(@RequestParam("Text") String Text) {
+        try {
+            return new ResponseEntity<>(categoriesService.search(Text), HttpStatus.OK);
+        } catch (Exception e) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.user.service;
 
+import com.user.DTO.UserDTO;
 import com.user.entity.UserEntity;
 
 import java.util.Map;
@@ -13,4 +14,6 @@ public interface UserService {
     Map<String, Object> delete(Long id);
 
     Map<String, Object> updateEmail(Long id,String oldEmail, String newEmail);
+
+    Map<String,Object> getUser(UserDTO userDTO);
 }
