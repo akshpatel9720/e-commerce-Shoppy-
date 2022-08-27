@@ -48,4 +48,11 @@ public class UserException extends Exception {
             super(message);
         }
     }
+
+
+    public static class getAllUser extends RuntimeException{
+        public getAllUser(String message){
+            super(message);
+        }
+    }
 }

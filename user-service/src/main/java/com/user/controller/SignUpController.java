@@ -25,10 +25,8 @@ SignUpController {
     @PostMapping("/signup")
     public ResponseEntity<Map<String, Object>> save(@RequestBody UserEntity userEntity) {
         try {
-            logger.info(" Inside Save() " + userEntity);
             return new ResponseEntity<>(registrationService.save(userEntity), HttpStatus.OK);
         } catch (Exception e) {
-            logger.error(" Error occured while save user ");
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new UserException.HandleException("email already exist!");
         }
@@ -37,12 +35,8 @@ SignUpController {
     @GetMapping("/verifyAccount")
     public ResponseEntity<Map<String, Object>> verifyAccount(@RequestParam("email") String email, @RequestParam("password") String password) {
         try {
-            logger.info("Inside verifyAccount() : " + email);
             return new ResponseEntity<>(registrationService.verifyAccount(email, password), HttpStatus.OK);
-
         } catch (Exception e) {
-            logger.error("Error occured while registering user {} :Reason :{}");
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new UserException.VerifyAccountHandler("verify account is not exist");
         }
     }
@@ -50,11 +44,8 @@ SignUpController {
     @GetMapping("/forgetPassword")
     public ResponseEntity<Map<String, Object>> forgetPassword(@RequestParam("email") String email) {
         try {
-            logger.info("inside forgetPassword() " + email);
             return new ResponseEntity<>(registrationService.forgetPassword(email), HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("Error occured while registering user {} :Reason :{}");
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new UserException.ForgetPasswordHandler("password does not exist");
         }
     }
@@ -64,7 +55,6 @@ SignUpController {
         try {
             return new ResponseEntity(registrationService.resetPassword(email, password, oldpassword), HttpStatus.OK);
         } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new UserException.ResetPasswordHandler("password does not exist");
         }
     }

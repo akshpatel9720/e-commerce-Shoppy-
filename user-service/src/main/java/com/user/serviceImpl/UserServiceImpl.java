@@ -1,6 +1,6 @@
 package com.user.serviceImpl;
 
-import com.user.DTO.UserDTO;
+import com.user.DTO.UserListDTO;
 import com.user.entity.UserEntity;
 import com.user.repository.UserRepository;
 import com.user.service.EmailService;
@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> map = new HashMap<>();
         Optional<UserEntity> user1 = userRepository.findById(id);
         if (user1.isPresent()) {
-
             map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
             map.put(ResponseMessage.MESSAGE, ResponseMessage.SUCCESS_MESSAGE_GET);
             map.put(ResponseMessage.DATA, user1);
@@ -101,11 +100,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> getUser(UserDTO userDTO) {
+    public Map<String, Object> getUser(UserListDTO userListDTO) {
         Map<String, Object> map = new HashMap<>();
-        Boolean status = Boolean.valueOf(userDTO.getWhere().get("isActive").toString());
-        Integer page = Integer.valueOf(userDTO.getPagination().get("page").toString());
-        Integer pagesize = Integer.valueOf(userDTO.getPagination().get("rowsPerPage").toString());
+        Boolean status = Boolean.valueOf(userListDTO.getWhere().get("isActive").toString());
+        Integer page = Integer.valueOf(userListDTO.getPagination().get("page").toString());
+        Integer pagesize = Integer.valueOf(userListDTO.getPagination().get("rowsPerPage").toString());
         Page<UserEntity> userEntities = null;
         Pageable pageable = PageRequest.of(page, pagesize);
         List<UserEntity> userEntityList = new ArrayList<>();
@@ -114,7 +113,7 @@ public class UserServiceImpl implements UserService {
             userEntityList.add(userEntities1);
         }
         map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
-        map.put(ResponseMessage.MESSAGE, ResponseMessage.SUCCESS_MESSAGE_UPDATE_EMAIL);
+        map.put(ResponseMessage.MESSAGE, ResponseMessage.DATA_FIND_SUCCESSFULLY);
         map.put(ResponseMessage.DATA, userEntityList);
         return map;
     }

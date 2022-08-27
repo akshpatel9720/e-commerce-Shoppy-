@@ -1,7 +1,10 @@
 package com.category.serviceImpl;
 
+import com.category.DTO.CartListDTO;
 import com.category.DTO.ProductDTO;
+import com.category.DTO.ProductListDTO;
 import com.category.DTO.ResponseMessage;
+import com.category.entity.CartEntity;
 import com.category.entity.CategoryEntity;
 import com.category.entity.ProductEntity;
 import com.category.repository.ProductRepo;
@@ -9,6 +12,9 @@ import com.category.service.ProductService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Map<String, Object> updateProductById(Long pId, ProductDTO productDTO) {
         Map<String, Object> map = new HashMap<>();
-        if (productDTO!=null) {
+        if (productDTO != null) {
             ProductEntity existProduct = productRepo.findById(pId).get();
             if (existProduct.getPId() != null) {
                 existProduct.setName(productDTO.getName());
@@ -82,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
                 map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_NOT_UPDATED);
                 map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
             }
-        }else {
+        } else {
             map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_400);
             map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_NOT_UPDATED);
             map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
@@ -151,6 +157,26 @@ public class ProductServiceImpl implements ProductService {
             map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.FAIL_SEARCH_TEXT_NOT);
             map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
         }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getproductList(ProductListDTO productListDTO) {
+        Map<String, Object> map = new HashMap<>();
+        Boolean status = Boolean.valueOf(productListDTO.getWhere().get("isActive").toString());
+        Long categoryId = Long.valueOf(productListDTO.getWhere().get("categoryId").toString());
+        Integer page = Integer.valueOf(productListDTO.getPagination().get("page").toString());
+        Integer rowPerPage = Integer.valueOf(productListDTO.getPagination().get("rowsPerPage").toString());
+        Page<ProductEntity> productEntities = null;
+        Pageable pageable = PageRequest.of(page, rowPerPage);
+        List<ProductEntity> cartEntityList = new ArrayList<>();
+        productEntities = productRepo.findStatusAndUserId(status, categoryId, pageable);
+        for (ProductEntity cartEntites : productEntities) {
+            cartEntityList.add(cartEntites);
+        }
+        map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
+        map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_FIND_SUCCESSFULLY);
+        map.put(ResponseMessage.RESPONSE_DATA, cartEntityList);
         return map;
     }
 

@@ -1,6 +1,6 @@
 package com.user.controller;
 
-import com.user.DTO.UserDTO;
+import com.user.DTO.UserListDTO;
 import com.user.entity.UserEntity;
 import com.user.exception.UserException;
 import com.user.service.UserService;
@@ -23,8 +23,6 @@ public class UserController {
         try {
             return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
         } catch (Exception e) {
-
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new UserException.GetUserByIdHandler("data does not fetch");
         }
     }
@@ -60,12 +58,11 @@ public class UserController {
     }
 
     @PostMapping("/getUser")
-    public ResponseEntity<Map<String, Object>> getUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<Map<String, Object>> getUser(@RequestBody UserListDTO userListDTO) {
         try {
-            return new ResponseEntity<>(userService.getUser(userDTO), HttpStatus.OK);
+            return new ResponseEntity<>(userService.getUser(userListDTO), HttpStatus.OK);
         } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-            throw new UserException.UpdateEamilHandler("data is not update");
+            throw new UserException.getAllUser("data is not fetched");
         }
     }
 

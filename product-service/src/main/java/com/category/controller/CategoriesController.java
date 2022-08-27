@@ -1,6 +1,8 @@
 package com.category.controller;
 
+import com.category.DTO.CartListDTO;
 import com.category.DTO.CategoryDTO;
+import com.category.DTO.CategoryListDTO;
 import com.category.entity.CategoryEntity;
 import com.category.exception.ProductException;
 import com.category.service.CategoriesService;
@@ -75,6 +77,15 @@ public class CategoriesController {
         } catch (Exception e) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    @PostMapping("/getCategoryList")
+    public ResponseEntity<Map<String, Object>> getUser(@RequestBody CategoryListDTO categoryListDTO) {
+        try {
+            return new ResponseEntity<>(categoriesService.getUser(categoryListDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not fetched");
         }
     }
 

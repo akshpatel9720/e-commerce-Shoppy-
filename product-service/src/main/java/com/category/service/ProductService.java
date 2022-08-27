@@ -1,6 +1,7 @@
 package com.category.service;
 
 import com.category.DTO.ProductDTO;
+import com.category.DTO.ProductListDTO;
 import com.category.entity.ProductEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,4 +19,5 @@ public interface ProductService {
     Map<String, Object> uploadProductImage(Long pId, MultipartFile multipartFile);
     Map<String, Object> search(String Text);
 
+    Map<String,Object> getproductList(ProductListDTO productListDTO);
 }

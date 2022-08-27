@@ -1,6 +1,8 @@
 package com.category.controller;
 
+import com.category.DTO.CartListDTO;
 import com.category.DTO.ProductDTO;
+import com.category.DTO.ProductListDTO;
 import com.category.entity.CategoryEntity;
 import com.category.entity.ProductEntity;
 import com.category.exception.ProductException;
@@ -77,7 +79,14 @@ public class ProductController {
         }
     }
 
-
+    @PostMapping("/getproductList")
+    public ResponseEntity<Map<String, Object>> getproductList(@RequestBody ProductListDTO productListDTO) {
+        try {
+            return new ResponseEntity<>(productService.getproductList(productListDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "data not fetched");
+        }
+    }
 
 
 }

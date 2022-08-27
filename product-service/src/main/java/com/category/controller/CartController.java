@@ -1,8 +1,7 @@
 package com.category.controller;
 
 import com.category.DTO.CartDTO;
-import com.category.DTO.CategoryDTO;
-import com.category.exception.ProductException;
+import com.category.DTO.CartListDTO;
 import com.category.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,10 +27,10 @@ public class CartController {
         }
     }
 
-    @DeleteMapping("/deleteProduct")
-    public ResponseEntity<Map<String,Object>> deleteProduct(@RequestBody CartDTO cartDTO){
+    @DeleteMapping("/deleteAProduct")
+    public ResponseEntity<Map<String,Object>> deleteAProduct(@RequestBody CartDTO cartDTO){
         try {
-            return new ResponseEntity<>(cartService.deleteProduct(cartDTO), HttpStatus.OK);
+            return new ResponseEntity<>(cartService.deleteAProduct(cartDTO), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not deleted");
         }
@@ -46,12 +45,21 @@ public class CartController {
         }
     }
 
-//    @PostMapping("/deleteSelectedProduct")
-//    public ResponseEntity<Map<String,Object>> deleteSelectedProduct(@RequestBody CartDTO cartDTO){
-//        try {
-//            return new ResponseEntity<>(cartService.deleteSelectedProduct(cartDTO), HttpStatus.OK);
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not deleted");
-//        }
-//    }
+    @PostMapping("/deleteSelectedProduct")
+    public ResponseEntity<Map<String,Object>> deleteSelectedProduct(@RequestBody CartDTO cartDTO){
+        try {
+            return new ResponseEntity<>(cartService.deleteSelectedProduct(cartDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not deleted");
+        }
+    }
+
+    @PostMapping("/getCartList")
+    public ResponseEntity<Map<String, Object>> getUser(@RequestBody CartListDTO cartListDTO) {
+        try {
+            return new ResponseEntity<>(cartService.getUser(cartListDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not fetched");
+        }
+    }
 }

@@ -10,7 +10,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class UserDTO {
+public class UserListDTO {
 
     Map<String, Object> where = new HashMap<>();
     Map<String, Object> pagination = new HashMap<>();

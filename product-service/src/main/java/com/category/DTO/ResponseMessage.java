@@ -26,6 +26,10 @@ public class ResponseMessage {
     public static final String DATA_NOT_UPDATED = "data is not updated";
     public static final String PRODUCT_UPLOADED_SUCESSFULLY = "product image update successfully";
     public static final String PRODUCT_NOT_UPLOADED = "product image not uploaded";
-    public static final String ENTER_VALID_DATA = "data is not present ";
+    public static final String ENTER_VALID_DATA = "please enter data ";
+    public static final String IMAGE_IS_NULL = "image is not uploaded";
+    public static final String HEADER_UPLOADED_SUCESSFULLY = "data saved successfully";
+    public static final String HEADER_NOT_UPLOADED = "data not saved";
+    public static final String HEADER_IS_NOT_PRESENT = "header is not present";
 }
 

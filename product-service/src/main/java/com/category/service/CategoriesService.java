@@ -1,6 +1,7 @@
 package com.category.service;
 
 import com.category.DTO.CategoryDTO;
+import com.category.DTO.CategoryListDTO;
 import com.category.entity.CategoryEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,4 +19,7 @@ public interface CategoriesService {
     Map<String, Object> updateIsactive(Long cId);
 
     Map<String, Object> search(String Text);
+
+
+    Map<String,Object> getUser(CategoryListDTO categoryListDTO);
 }

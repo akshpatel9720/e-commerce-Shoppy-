@@ -1,13 +1,19 @@
 package com.category.serviceImpl;
 
+import com.category.DTO.CartListDTO;
 import com.category.DTO.CategoryDTO;
+import com.category.DTO.CategoryListDTO;
 import com.category.DTO.ResponseMessage;
+import com.category.entity.CartEntity;
 import com.category.entity.CategoryEntity;
 import com.category.repository.CategoriesRepo;
 import com.category.service.CategoriesService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -141,6 +147,25 @@ public class CategoriesServiceImpl implements CategoriesService {
             map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.FAIL_SEARCH_TEXT_NOT);
             map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
         }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getUser(CategoryListDTO categoryListDTO) {
+        Map<String, Object> map = new HashMap<>();
+        Boolean status = Boolean.valueOf(categoryListDTO.getWhere().get("isActive").toString());
+        Integer page = Integer.valueOf(categoryListDTO.getPagination().get("page").toString());
+        Integer rowPerPage = Integer.valueOf(categoryListDTO.getPagination().get("rowsPerPage").toString());
+        Page<CategoryEntity> categoryEntities = null;
+        Pageable pageable = PageRequest.of(page, rowPerPage);
+        List<CategoryEntity> cartEntityList = new ArrayList<>();
+        categoryEntities = categoriesRepo.findStatusAndUserId(status, pageable);
+        for (CategoryEntity categoryEntity : categoryEntities) {
+            cartEntityList.add(categoryEntity);
+        }
+        map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
+        map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_FIND_SUCCESSFULLY);
+        map.put(ResponseMessage.RESPONSE_DATA, cartEntityList);
         return map;
     }
 }
