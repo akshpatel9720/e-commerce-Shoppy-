@@ -1,3 +1,4 @@
 rootProject.name = 'product-service'
 include('user-service')
 include('product-service')
+include('payment-service')
