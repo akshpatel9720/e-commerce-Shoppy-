@@ -68,4 +68,12 @@ public class ResponseMessage {
     public static final String FAIL_DELETE = "data does not deleted";
     public static final String UPDATE_ADDRESS_SUCCESSFULLY = "data updated successfully";
     public static final String ADDRESS_NOT_UPDATED = "data is not updated";
+    public static final String PROMO_CODE_SAVE = "promocode saved successfully";
+    public static final String ENTER_DATA = "please enter data";
+    public static final String PROMO_CODE_UPDATE = "Promocode update successfully";
+    public static final String ENTER_VALID_DATA = "enter valid data id for update";
+    public static final String REDEEM_CODE_SUCESS = "redeem code save successfully";
+    public static final String REDEEM_CODE_NOT_SUCESS = "redeem not saved";
+    public static final String REDEEM_CODE_UPDATE_SUCESS = "redeem code update successfully";
+    public static final String REDEEM_CODE_NOTUPDATE_SUCESS = "redeem code is not update";
 }

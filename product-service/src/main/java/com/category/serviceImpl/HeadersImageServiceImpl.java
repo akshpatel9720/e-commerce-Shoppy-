@@ -24,6 +24,7 @@ public class HeadersImageServiceImpl implements HeadersImageService {
     @Autowired
     HeadersImageRepo headersImageRepo;
 
+
     @Override
     public Map<String, Object> save(HeadersImageDTO headersImageDTO, MultipartFile multipartFile) {
         Map<String, Object> map = new HashMap<>();
