@@ -31,5 +31,8 @@ public class ResponseMessage {
     public static final String HEADER_UPLOADED_SUCESSFULLY = "data saved successfully";
     public static final String HEADER_NOT_UPLOADED = "data not saved";
     public static final String HEADER_IS_NOT_PRESENT = "header is not present";
+    public static final String STATUS_401 = "401";
+
+    public static final String AUTHENTICATION_FAIL = "Authentication is failed or please enter valid token";
 }
 

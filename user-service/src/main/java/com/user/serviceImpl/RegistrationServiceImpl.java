@@ -42,7 +42,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 map.put("message", "email already exist");
                 map.put("data", new ArrayList<>());
             } else {
-                savedUser.setActive(Boolean.FALSE);
+                savedUser.setActive(Boolean.TRUE);
                 savedUser.setCreatedDate(LocalDateTime.now());
                 savedUser.setEmail(userEntity.getEmail());
                 savedUser.setFirstName(userEntity.getFirstName());
@@ -50,17 +50,11 @@ public class RegistrationServiceImpl implements RegistrationService {
                 savedUser.setPassword(passwordEncoder.encode(userEntity.getPassword()));
                 savedUser.setPhoneNumber(userEntity.getPhoneNumber());
                 savedUser.setUpdatedDate(null);
-                if (savedUser.getUserType() == null) {
-                    savedUser.setUserType("user");
-                } else {
-                    savedUser.setUserType("admin");
-                }
+                savedUser.setUserType(userEntity.getUserType());
                 userRepository.save(savedUser);
-                emailService.sendWelcomeMailToUser(userEntity);
                 map.put("status", Boolean.TRUE);
                 map.put("message", "data saved successfully");
                 map.put("data", savedUser);
-
             }
         } else {
             map.put("status", Boolean.FALSE);

@@ -1,5 +1,7 @@
 package com.category.service;
 
+import com.category.DTO.ResponseDTO;
+
 public interface AuthenticationService {
-    public Boolean isAuthenticated(String authToken);
+    public ResponseDTO isAuthenticated(String authToken);
 }

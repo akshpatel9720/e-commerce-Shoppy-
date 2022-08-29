@@ -13,7 +13,9 @@ public interface UserService {
 
     Map<String, Object> delete(Long id);
 
-    Map<String, Object> updateEmail(Long id,String oldEmail, String newEmail);
+    Map<String, Object> updateEmail(Long id, String oldEmail, String newEmail);
 
-    Map<String,Object> getUser(UserListDTO userListDTO);
+    Map<String, Object> getUser(UserListDTO userListDTO);
+
+    Map<String, Object> getAllUser(String authToken);
 }

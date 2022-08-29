@@ -66,5 +66,14 @@ public class UserController {
         }
     }
 
+    @GetMapping("/getAllUser")
+    public ResponseEntity<Map<String, Object>> getAllUser(@RequestHeader("Authorization") String authToken) {
+        try {
+            return new ResponseEntity<>(userService.getAllUser(authToken), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new UserException.GetUserByIdHandler("data does not fetch");
+        }
+    }
+
 
 }

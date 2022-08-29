@@ -32,9 +32,9 @@ public class ProductController {
     }
 
     @PostMapping("/saveProduct")
-    public ResponseEntity<Map<String, Object>> save(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<Map<String, Object>> save(@RequestBody ProductDTO productDTO,@RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(productService.save(productDTO), HttpStatus.OK);
+            return new ResponseEntity<>(productService.save(productDTO,token), HttpStatus.OK);
         } catch (Exception e) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new ProductException.HandleException("data is not save");

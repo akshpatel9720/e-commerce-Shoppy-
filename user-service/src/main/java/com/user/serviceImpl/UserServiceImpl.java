@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
             existingUserEntity.get().setPhoneNumber(userEntity.getPhoneNumber());
             existingUserEntity.get().setFirstName(userEntity.getFirstName());
             existingUserEntity.get().setLastName(userEntity.getLastName());
+            existingUserEntity.get().setActive(Boolean.TRUE);
             UserEntity updateUser = userRepository.save(existingUserEntity.get());
             map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
             map.put(ResponseMessage.MESSAGE, ResponseMessage.SUCCESS_MESSAGE_UPDATE);
@@ -115,6 +116,16 @@ public class UserServiceImpl implements UserService {
         map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
         map.put(ResponseMessage.MESSAGE, ResponseMessage.DATA_FIND_SUCCESSFULLY);
         map.put(ResponseMessage.DATA, userEntityList);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getAllUser(String authToken) {
+        Map<String, Object> map = new HashMap<>();
+        List<UserEntity> getUser = userRepository.findAll();
+        map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
+        map.put(ResponseMessage.MESSAGE, ResponseMessage.DATA_FIND_SUCCESSFULLY);
+        map.put(ResponseMessage.DATA, getUser);
         return map;
     }
 }

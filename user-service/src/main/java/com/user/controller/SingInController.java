@@ -19,10 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -47,7 +44,7 @@ public class SingInController {
     public ResponseDTO createAuthenticationToken(@RequestBody RequestDTO authenticationRequest)
             throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
-        Map<String, Object> mapResponse = new HashMap<String,Object>();
+        Map<String, Object> mapResponse = new HashMap<String, Object>();
         Map<String, Object> mapResponseUserData = new HashMap<String, Object>();
         try {
             authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -68,7 +65,6 @@ public class SingInController {
                 map.put("RESPONSE_DATA", mapResponseUserData);
 
             }
-            return new ResponseDTO(ResponseMessage.SUCCESS_API_CODE,Boolean.TRUE,map);
         } catch (Exception e) {
             if (e.getMessage().equalsIgnoreCase("INVALID_CREDENTIALS")) {
                 map.put("RESPONSE_STATUS", "400");
@@ -77,13 +73,13 @@ public class SingInController {
             }
         }
 
-        return new ResponseDTO(ResponseMessage.FAIl_SIGNIN_MESSAGE,Boolean.FALSE,map);
+        return new ResponseDTO(ResponseMessage.FAIl_SIGNIN_MESSAGE, Boolean.FALSE, map);
     }
 
 
     private void authenticate(String name, String password) throws Exception {
-//        Objects.requireNonNull(name);
-//        Objects.requireNonNull(password);
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(password);
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(name, password));

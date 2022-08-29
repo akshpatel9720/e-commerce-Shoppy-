@@ -10,7 +10,7 @@ import java.util.Map;
 public interface ProductService {
     public Map<String, Object> getProductById(Long pId);
 
-    Map<String, Object> save(ProductDTO productDTO);
+    Map<String, Object> save(ProductDTO productDTO,String token);
 
     Map<String, Object> updateProductById(Long pId, ProductDTO productDTO);
 

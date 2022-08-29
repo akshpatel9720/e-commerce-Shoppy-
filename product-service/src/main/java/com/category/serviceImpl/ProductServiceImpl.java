@@ -1,13 +1,11 @@
 package com.category.serviceImpl;
 
-import com.category.DTO.CartListDTO;
-import com.category.DTO.ProductDTO;
-import com.category.DTO.ProductListDTO;
-import com.category.DTO.ResponseMessage;
+import com.category.DTO.*;
 import com.category.entity.CartEntity;
 import com.category.entity.CategoryEntity;
 import com.category.entity.ProductEntity;
 import com.category.repository.ProductRepo;
+import com.category.service.AuthenticationService;
 import com.category.service.ProductService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -27,6 +25,9 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     ProductRepo productRepo;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     @Override
     public Map<String, Object> getProductById(Long pId) {
         Map<String, Object> map = new HashMap<>();
@@ -43,29 +44,41 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<String, Object> save(ProductDTO productDTO) {
+    public Map<String, Object> save(ProductDTO productDTO, String token) {
+
+
         Map<String, Object> map = new HashMap<>();
         ProductEntity saveProduct = new ProductEntity();
-        if (productDTO != null) {
-            saveProduct.setCreatedAt(productDTO.getCreatedAt());
-            saveProduct.setIsActive(Boolean.TRUE);
-            saveProduct.setName(productDTO.getName());
-            saveProduct.setPrice(productDTO.getPrice());
-            saveProduct.setDiscountPrice(productDTO.getDiscountPrice());
-            saveProduct.setCategoryId(productDTO.getCategoryId());
-            saveProduct.setQuantity(productDTO.getQuantity());
-            saveProduct.setSpecification(productDTO.getSpecification());
-            saveProduct.setUserId(productDTO.getUserId());
-            productRepo.save(saveProduct);
-            map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
-            map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_SAVED_SUCCESSFULLY);
-            map.put(ResponseMessage.RESPONSE_DATA, saveProduct);
+
+        ResponseDTO authReponse = authenticationService.isAuthenticated(token);
+        System.out.println("authresponse-----" + authReponse);
+        if (authReponse.getStatus()) {
+            if (productDTO != null) {
+                saveProduct.setCreatedAt(LocalDateTime.now());
+                saveProduct.setIsActive(Boolean.TRUE);
+                saveProduct.setName(productDTO.getName());
+                saveProduct.setPrice(productDTO.getPrice());
+                saveProduct.setDiscountPrice(productDTO.getDiscountPrice());
+                saveProduct.setCategoryId(productDTO.getCategoryId());
+                saveProduct.setQuantity(productDTO.getQuantity());
+                saveProduct.setSpecification(productDTO.getSpecification());
+                saveProduct.setUserId(productDTO.getUserId());
+                productRepo.save(saveProduct);
+                map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
+                map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_SAVED_SUCCESSFULLY);
+                map.put(ResponseMessage.RESPONSE_DATA, saveProduct);
+            } else {
+                map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_400);
+                map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_NOT_SAVED);
+            }
         } else {
-            map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_400);
-            map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_NOT_SAVED);
+            map.put(ResponseMessage.RESPONSE_STATUS,ResponseMessage.STATUS_401);
+            map.put(ResponseMessage.RESPONSE_MESSAGE,ResponseMessage.AUTHENTICATION_FAIL);
+            map.put(ResponseMessage.RESPONSE_DATA,new ArrayList<>());
         }
         return map;
     }
+
 
     @Override
     public Map<String, Object> updateProductById(Long pId, ProductDTO productDTO) {
@@ -179,6 +192,5 @@ public class ProductServiceImpl implements ProductService {
         map.put(ResponseMessage.RESPONSE_DATA, cartEntityList);
         return map;
     }
-
 
 }

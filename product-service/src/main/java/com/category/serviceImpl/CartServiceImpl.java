@@ -32,6 +32,7 @@ public class CartServiceImpl implements CartService {
         if (cartDTO != null) {
             addToCart.setUserId(cartDTO.getUserId());
             addToCart.setCreatedAt(LocalDateTime.now());
+            addToCart.setIsActive(Boolean.TRUE);
             for (String pId : cartDTO.getPId()) {
                 addToCart.setPId(String.join(",", pId));
             }
@@ -121,11 +122,11 @@ public class CartServiceImpl implements CartService {
         Integer page = Integer.valueOf(cartListDTO.getPagination().get("page").toString());
         Integer rowPerPage = Integer.valueOf(cartListDTO.getPagination().get("rowsPerPage").toString());
         Page<CartEntity> cartEntities = null;
-        Pageable pageable = PageRequest.of(page,rowPerPage);
+        Pageable pageable = PageRequest.of(page, rowPerPage);
         List<CartEntity> cartEntityList = new ArrayList<>();
-        cartEntities=cartRepo.findStatusAndUserId(status,userId,pageable);
-        for (CartEntity cartEntites:cartEntities) {
-                cartEntityList.add(cartEntites);
+        cartEntities = cartRepo.findStatusAndUserId(status, userId, pageable);
+        for (CartEntity cartEntites : cartEntities) {
+            cartEntityList.add(cartEntites);
         }
         map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
         map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_FIND_SUCCESSFULLY);
