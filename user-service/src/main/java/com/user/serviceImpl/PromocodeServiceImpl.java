@@ -24,7 +24,7 @@ public class PromocodeServiceImpl implements PromocodeService {
 
 
     @Override
-    public Map<String, Object> save(PromocodeDTO promocodeDTO) {
+    public Map<String, Object> save(PromocodeDTO promocodeDTO, String authToken) {
         Map<String, Object> map = new HashMap<>();
         PromocodeEntity savePromocode = new PromocodeEntity();
         if (promocodeDTO != null) {
@@ -36,6 +36,7 @@ public class PromocodeServiceImpl implements PromocodeService {
                 savePromocode.setMaxdiscountvalue(promocodeDTO.getMaxdiscountvalue());
                 savePromocode.setIsActive(Boolean.TRUE);
                 savePromocode.setCreatedAt(LocalDateTime.now());
+                promocodeRepository.save(savePromocode);
                 map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
                 map.put(ResponseMessage.MESSAGE, ResponseMessage.PROMO_CODE_SAVE);
                 map.put(ResponseMessage.DATA, savePromocode);
@@ -47,6 +48,7 @@ public class PromocodeServiceImpl implements PromocodeService {
                 savePromocode.setMaxdiscountvalue(promocodeDTO.getMaxdiscountvalue());
                 savePromocode.setIsActive(Boolean.TRUE);
                 savePromocode.setCreatedAt(LocalDateTime.now());
+                promocodeRepository.save(savePromocode);
                 map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
                 map.put(ResponseMessage.MESSAGE, ResponseMessage.PROMO_CODE_SAVE);
                 map.put(ResponseMessage.DATA, savePromocode);
@@ -60,7 +62,7 @@ public class PromocodeServiceImpl implements PromocodeService {
     }
 
     @Override
-    public Map<String, Object> deleteAddress(Long id) {
+    public Map<String, Object> deleteAddress(Long id, String authToken) {
         Map<String, Object> map = new HashMap<>();
         Optional<PromocodeEntity> promocodeEntity = promocodeRepository.findById(id);
         if (promocodeEntity.isPresent()) {
@@ -78,11 +80,11 @@ public class PromocodeServiceImpl implements PromocodeService {
     }
 
     @Override
-    public Map<String, Object> updatePromocode(Long id, PromocodeDTO promocodeDTO) {
+    public Map<String, Object> updatePromocode(Long id, PromocodeDTO promocodeDTO, String authToken) {
         Map<String, Object> map = new HashMap<>();
         Optional<PromocodeEntity> savedPromocode = promocodeRepository.findById(id);
         if (savedPromocode.isPresent()) {
-            if (promocodeDTO.getType().equalsIgnoreCase(PromocodeEnum.FLAT.toString())) {
+            if (promocodeDTO.getType().equalsIgnoreCase("flat")) {
                 savedPromocode.get().setUpdatedAt(LocalDateTime.now());
                 savedPromocode.get().setIsActive(promocodeDTO.getIsActive());
                 savedPromocode.get().setCouponcode(promocodeDTO.getCouponcode());
@@ -90,6 +92,7 @@ public class PromocodeServiceImpl implements PromocodeService {
                 savedPromocode.get().setDescription(promocodeDTO.getDescription());
                 savedPromocode.get().setMinvalue(promocodeDTO.getMinvalue());
                 savedPromocode.get().setMaxdiscountvalue(promocodeDTO.getMaxdiscountvalue());
+                promocodeRepository.save(savedPromocode.get());
                 map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
                 map.put(ResponseMessage.MESSAGE, ResponseMessage.PROMO_CODE_UPDATE);
                 map.put(ResponseMessage.DATA, savedPromocode);
@@ -101,6 +104,7 @@ public class PromocodeServiceImpl implements PromocodeService {
                 savedPromocode.get().setDescription(promocodeDTO.getDescription());
                 savedPromocode.get().setMinvalue(promocodeDTO.getMinvalue());
                 savedPromocode.get().setMaxdiscountvalue(promocodeDTO.getMaxdiscountvalue());
+                promocodeRepository.save(savedPromocode.get());
                 map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
                 map.put(ResponseMessage.MESSAGE, ResponseMessage.PROMO_CODE_UPDATE);
                 map.put(ResponseMessage.DATA, savedPromocode);
@@ -114,7 +118,7 @@ public class PromocodeServiceImpl implements PromocodeService {
     }
 
     @Override
-    public Map<String, Object> getAllPromocode(PromocodeListDTO promocodeListDTO) {
+    public Map<String, Object> getAllPromocode(PromocodeListDTO promocodeListDTO, String authToken) {
         Map<String, Object> map = new HashMap<>();
         Boolean status = Boolean.valueOf(promocodeListDTO.getWhere().get("isActive").toString());
         Integer page = Integer.valueOf(promocodeListDTO.getPagination().get("page").toString());
@@ -131,8 +135,6 @@ public class PromocodeServiceImpl implements PromocodeService {
         map.put(ResponseMessage.DATA, promocodeEntitiesList);
         return map;
     }
-
-
 
 
 }

@@ -23,14 +23,15 @@ public class RedeemCodeServiceImpl implements RedeemCodeService {
 
 
     @Override
-    public Map<String, Object> addUserRedeemCode(RedeemCodeDTO redeemCodeDTO) {
+    public Map<String, Object> addUserRedeemCode(RedeemCodeDTO redeemCodeDTO, String authToken) {
         Map<String, Object> map = new HashMap<>();
         RedeemCodeEntity redeemCodeEntity = new RedeemCodeEntity();
         if (redeemCodeDTO != null) {
-            redeemCodeEntity.setPromocodeId(redeemCodeEntity.getPromocodeId());
-            redeemCodeEntity.setUserId(redeemCodeEntity.getUserId());
+            redeemCodeEntity.setPromocodeId(redeemCodeDTO.getPromocodeId());
+            redeemCodeEntity.setUserId(redeemCodeDTO.getUserId());
             redeemCodeEntity.setCreatedAt(LocalDateTime.now());
             redeemCodeEntity.setIsActive(Boolean.TRUE);
+            redeemCodeRepository.save(redeemCodeEntity);
             map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
             map.put(ResponseMessage.MESSAGE, ResponseMessage.REDEEM_CODE_SUCESS);
             map.put(ResponseMessage.DATA, redeemCodeEntity);
@@ -43,13 +44,14 @@ public class RedeemCodeServiceImpl implements RedeemCodeService {
     }
 
     @Override
-    public Map<String, Object> updatePromocode(Long id, RedeemCodeDTO redeemCodeDTO) {
+    public Map<String, Object> updatePromocode(Long id, RedeemCodeDTO redeemCodeDTO, String authToken) {
         Map<String, Object> map = new HashMap<>();
         Optional<RedeemCodeEntity> savedRedeemCode = redeemCodeRepository.findById(id);
         if (savedRedeemCode.isPresent()) {
             savedRedeemCode.get().setUpdatedAt(LocalDateTime.now());
             savedRedeemCode.get().setPromocodeId(redeemCodeDTO.getPromocodeId());
             savedRedeemCode.get().setUserId(redeemCodeDTO.getUserId());
+            redeemCodeRepository.save(savedRedeemCode.get());
             map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
             map.put(ResponseMessage.MESSAGE, ResponseMessage.REDEEM_CODE_UPDATE_SUCESS);
             map.put(ResponseMessage.DATA, savedRedeemCode);
@@ -62,7 +64,7 @@ public class RedeemCodeServiceImpl implements RedeemCodeService {
     }
 
     @Override
-    public Map<String, Object> getAllRedeemCode(RedeemCodeListDTO redeemCodeListDTO) {
+    public Map<String, Object> getAllRedeemCode(RedeemCodeListDTO redeemCodeListDTO,String authToken) {
         Map<String, Object> map = new HashMap<>();
         Boolean status = Boolean.valueOf(redeemCodeListDTO.getWhere().get("isActive").toString());
         Integer page = Integer.valueOf(redeemCodeListDTO.getPagination().get("page").toString());
