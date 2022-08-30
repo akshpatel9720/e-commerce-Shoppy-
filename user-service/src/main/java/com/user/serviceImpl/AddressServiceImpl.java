@@ -2,6 +2,7 @@ package com.user.serviceImpl;
 
 import com.user.DTO.AddressDTO;
 import com.user.DTO.AddressListDTO;
+import com.user.DTO.ResponseDTO;
 import com.user.entity.AddressEntity;
 import com.user.repository.AddressRepository;
 import com.user.service.AddressService;
@@ -23,35 +24,42 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     AddressRepository addressRepository;
 
+
+
     @Override
-    public Map<String, Object> save(AddressDTO addressDTO) {
+    public Map<String, Object> save(AddressDTO addressDTO, String authToken) {
         Map<String, Object> map = new HashMap<>();
         AddressEntity addressEntity = new AddressEntity();
-        if (addressDTO != null) {
-            addressEntity.setCreatedAt(LocalDateTime.now());
-            addressEntity.setUserId(addressEntity.getUserId());
-            addressEntity.setLabel(addressDTO.getLabel());
-            addressEntity.setAddress_1(addressDTO.getAddress_1());
-            addressEntity.setAddress_2(addressDTO.getAddress_2());
-            addressEntity.setPincode(addressDTO.getPincode());
-            addressEntity.setLandmark(addressDTO.getLandmark());
-            addressEntity.setType(addressDTO.getAddress_1());
-            addressEntity.setUpdatedAt(null);
-            addressRepository.save(addressEntity);
-            map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
-            map.put(ResponseMessage.MESSAGE, ResponseMessage.DATA_SAVED_SUCCESSFULLY);
-            map.put(ResponseMessage.DATA, addressEntity);
-        } else {
-            map.put(ResponseMessage.STATUS, ResponseMessage.FAIL_API_CODE);
-            map.put(ResponseMessage.MESSAGE, ResponseMessage.DATA_NOT_SAVED);
-            map.put(ResponseMessage.DATA, new ArrayList<>());
+//        ResponseDTO authReponse = authenticationService.isAuthenticated(token);
+//        if (authReponse.getStatus()) {
+            if (addressDTO != null) {
+                addressEntity.setUserId(addressDTO.getUserId());
+                addressEntity.setCreatedAt(LocalDateTime.now());
+                addressEntity.setUserId(addressEntity.getUserId());
+                addressEntity.setLabel(addressDTO.getLabel());
+                addressEntity.setAddress_1(addressDTO.getAddress_1());
+                addressEntity.setAddress_2(addressDTO.getAddress_2());
+                addressEntity.setPincode(addressDTO.getPincode());
+                addressEntity.setLandmark(addressDTO.getLandmark());
+                addressEntity.setType(addressDTO.getAddress_1());
+                addressEntity.setUpdatedAt(null);
+                addressEntity.setIsActive(Boolean.TRUE);
+                addressRepository.save(addressEntity);
+                map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
+                map.put(ResponseMessage.MESSAGE, ResponseMessage.DATA_SAVED_SUCCESSFULLY);
+                map.put(ResponseMessage.DATA, addressEntity);
+            } else {
+                map.put(ResponseMessage.STATUS, ResponseMessage.FAIL_API_CODE);
+                map.put(ResponseMessage.MESSAGE, ResponseMessage.DATA_NOT_SAVED);
+                map.put(ResponseMessage.DATA, new ArrayList<>());
 
-        }
+            }
+
         return map;
     }
 
     @Override
-    public Map<String, Object> deleteAddress(Long userId, AddressDTO addressDTO) {
+    public Map<String, Object> deleteAddress(Long userId, String authToken) {
         Map<String, Object> map = new HashMap<>();
         Optional<AddressEntity> addressEntity = addressRepository.findById(userId);
         AddressEntity addressEntity1 = addressEntity.get();
@@ -69,13 +77,13 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Map<String, Object> getAddress(AddressListDTO addressListDTO) {
+    public Map<String, Object> getAddress(AddressListDTO addressListDTO, String authToken) {
         Map<String, Object> map = new HashMap<>();
         Boolean status = Boolean.valueOf(addressListDTO.getWhere().get("isActive").toString());
         Integer page = Integer.valueOf(addressListDTO.getPagination().get("page").toString());
-        Integer roePerPage = Integer.valueOf(addressListDTO.getPagination().get("rowsPerPage").toString());
+        Integer rowPerPage = Integer.valueOf(addressListDTO.getPagination().get("rowsPerPage").toString());
         Page<AddressEntity> addressEntities = null;
-        Pageable pageable = PageRequest.of(page, roePerPage);
+        Pageable pageable = PageRequest.of(page, rowPerPage);
         List<AddressEntity> addressEntityList = new ArrayList<>();
         addressEntities = addressRepository.findStatus(status, pageable);
         for (AddressEntity address : addressEntities) {
@@ -88,9 +96,9 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Map<String, Object> updateAddress(Long id, AddressDTO addressDTO) {
+    public Map<String, Object> updateAddress(Long id, AddressDTO addressDTO, String authToken) {
         Map<String, Object> map = new HashMap<>();
-        Optional<AddressEntity> addressEntity = addressRepository.findById(addressDTO.getId());
+        Optional<AddressEntity> addressEntity = addressRepository.findById(id);
         if (addressEntity.isPresent()) {
             addressEntity.get().setUpdatedAt(LocalDateTime.now());
             addressEntity.get().setAddress_1(addressDTO.getAddress_1());
@@ -100,6 +108,7 @@ public class AddressServiceImpl implements AddressService {
             addressEntity.get().setPincode(addressDTO.getPincode());
             addressEntity.get().setUserId(addressDTO.getUserId());
             addressEntity.get().setLabel(addressDTO.getLabel());
+            addressEntity.get().setIsActive(addressDTO.getIsActive());
             AddressEntity updateAddress = addressRepository.save(addressEntity.get());
             map.put(ResponseMessage.STATUS, ResponseMessage.SUCCESS_API_CODE);
             map.put(ResponseMessage.MESSAGE, ResponseMessage.UPDATE_ADDRESS_SUCCESSFULLY);
