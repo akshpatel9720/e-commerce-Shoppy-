@@ -8,16 +8,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 public interface ProductService {
-    public Map<String, Object> getProductById(Long pId);
+    public Map<String, Object> getProductById(Long pId,String token);
 
     Map<String, Object> save(ProductDTO productDTO,String token);
 
-    Map<String, Object> updateProductById(Long pId, ProductDTO productDTO);
+    Map<String, Object> updateProductById(Long pId, ProductDTO productDTO,String token);
 
-    Map<String,Object> deleteCategoriesById(Long pId);
+    Map<String,Object> deleteCategoriesById(Long pId,String token);
 
-    Map<String, Object> uploadProductImage(Long pId, MultipartFile multipartFile);
-    Map<String, Object> search(String Text);
+    Map<String, Object> uploadProductImage(Long pId, MultipartFile multipartFile,String token);
+    Map<String, Object> search(String Text,String token);
 
-    Map<String,Object> getproductList(ProductListDTO productListDTO);
+    Map<String,Object> getproductList(ProductListDTO productListDTO,String token);
 }

@@ -52,6 +52,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 savedUser.setUpdatedDate(null);
                 savedUser.setUserType(userEntity.getUserType());
                 userRepository.save(savedUser);
+                emailService.sendWelcomeMailToUser(savedUser);
                 map.put("status", Boolean.TRUE);
                 map.put("message", "data saved successfully");
                 map.put("data", savedUser);

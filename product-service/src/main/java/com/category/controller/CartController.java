@@ -19,47 +19,47 @@ public class CartController {
     CartService cartService;
 
     @PostMapping("/saveCart")
-    public ResponseEntity<Map<String, Object>> save(@RequestBody CartDTO cartDTO) {
+    public ResponseEntity<Map<String, Object>> save(@RequestBody CartDTO cartDTO, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(cartService.save(cartDTO), HttpStatus.OK);
+            return new ResponseEntity<>(cartService.save(cartDTO, token), HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not saved");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "data not saved");
         }
     }
 
     @DeleteMapping("/deleteAProduct")
-    public ResponseEntity<Map<String,Object>> deleteAProduct(@RequestBody CartDTO cartDTO){
+    public ResponseEntity<Map<String, Object>> deleteAProduct(@RequestBody CartDTO cartDTO, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(cartService.deleteAProduct(cartDTO), HttpStatus.OK);
+            return new ResponseEntity<>(cartService.deleteAProduct(cartDTO, token), HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not deleted");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "data not deleted");
         }
     }
 
     @DeleteMapping("/deleteAllProduct")
-    public ResponseEntity<Map<String,Object>> deleteAllProduct(@RequestParam("userId") Long userId){
+    public ResponseEntity<Map<String, Object>> deleteAllProduct(@RequestParam("userId") Long userId, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(cartService.deleteAllProduct(userId), HttpStatus.OK);
+            return new ResponseEntity<>(cartService.deleteAllProduct(userId, token), HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not deleted");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "data not deleted");
         }
     }
 
     @PostMapping("/deleteSelectedProduct")
-    public ResponseEntity<Map<String,Object>> deleteSelectedProduct(@RequestBody CartDTO cartDTO){
+    public ResponseEntity<Map<String, Object>> deleteSelectedProduct(@RequestBody CartDTO cartDTO, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(cartService.deleteSelectedProduct(cartDTO), HttpStatus.OK);
+            return new ResponseEntity<>(cartService.deleteSelectedProduct(cartDTO, token), HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not deleted");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "data not deleted");
         }
     }
 
     @PostMapping("/getCartList")
-    public ResponseEntity<Map<String, Object>> getUser(@RequestBody CartListDTO cartListDTO) {
+    public ResponseEntity<Map<String, Object>> getUser(@RequestBody CartListDTO cartListDTO, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(cartService.getUser(cartListDTO), HttpStatus.OK);
+            return new ResponseEntity<>(cartService.getUser(cartListDTO, token), HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not fetched");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "data not fetched");
         }
     }
 }

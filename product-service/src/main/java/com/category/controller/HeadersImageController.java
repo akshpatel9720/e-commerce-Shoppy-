@@ -18,27 +18,27 @@ public class HeadersImageController {
     HeadersImageService headersImageService;
 
     @PostMapping("/saveHeaderImg")
-    public ResponseEntity<Map<String, Object>> save(@RequestBody HeadersImageDTO headersImageDTO, MultipartFile multipartFile) {
+    public ResponseEntity<Map<String, Object>> save(@RequestBody HeadersImageDTO headersImageDTO, MultipartFile multipartFile, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(headersImageService.save(headersImageDTO, multipartFile), HttpStatus.OK);
+            return new ResponseEntity<>(headersImageService.save(headersImageDTO, multipartFile, token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ProductException.HandleException("data is not save");
         }
     }
 
     @GetMapping("/getHeaderById")
-    public ResponseEntity<Map<String, Object>> getHeaderById(@RequestParam("id") Long id) {
+    public ResponseEntity<Map<String, Object>> getHeaderById(@RequestParam("id") Long id, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(headersImageService.getHeaderById(id), HttpStatus.OK);
+            return new ResponseEntity<>(headersImageService.getHeaderById(id, token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ProductException.HandleException("data is not save");
         }
     }
 
     @PatchMapping("/updateHeaderImg")
-    public ResponseEntity<Map<String, Object>> updateHeaderImg(@RequestParam("id") Long id, MultipartFile multipartFile) {
+    public ResponseEntity<Map<String, Object>> updateHeaderImg(@RequestParam("id") Long id, MultipartFile multipartFile, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(headersImageService.updateHeaderImg(id, multipartFile), HttpStatus.OK);
+            return new ResponseEntity<>(headersImageService.updateHeaderImg(id, multipartFile, token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ProductException.HandleException("data is not save");
         }

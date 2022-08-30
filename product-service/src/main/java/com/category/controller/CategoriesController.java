@@ -24,9 +24,9 @@ public class CategoriesController {
     CategoriesService categoriesService;
 
     @PostMapping("/saveCategory")
-    public ResponseEntity<Map<String, Object>> save(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<Map<String, Object>> save(@RequestBody CategoryDTO categoryDTO, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(categoriesService.save(categoryDTO), HttpStatus.OK);
+            return new ResponseEntity<>(categoriesService.save(categoryDTO,token), HttpStatus.OK);
         } catch (Exception e) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new ProductException.HandleException("");
@@ -34,9 +34,9 @@ public class CategoriesController {
     }
 
     @GetMapping("/getCategoryById")
-    public ResponseEntity<Map<String, Object>> getCategoryById(@RequestParam("cId") Long cId) {
+    public ResponseEntity<Map<String, Object>> getCategoryById(@RequestParam("cId") Long cId, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(categoriesService.getCategoryById(cId), HttpStatus.OK);
+            return new ResponseEntity<>(categoriesService.getCategoryById(cId,token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ProductException.HandleException("category is not find");
         }
@@ -44,36 +44,36 @@ public class CategoriesController {
 
     @PostMapping("/uploadCategoryImage")
     public ResponseEntity<Map<String, Object>> uploadProfile(@RequestParam("cId") Long cId,
-                                                             @RequestParam("categoryImg") MultipartFile multipartFile) {
+                                                             @RequestParam("categoryImg") MultipartFile multipartFile, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(categoriesService.uploadCategoryImage(cId, multipartFile), HttpStatus.OK);
+            return new ResponseEntity<>(categoriesService.uploadCategoryImage(cId, multipartFile,token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
     @DeleteMapping("/deleteCategoriesById")
-    public ResponseEntity<Map<String,Object>> deleteCategoriesById(@RequestParam("cId") Long cId){
+    public ResponseEntity<Map<String,Object>> deleteCategoriesById(@RequestParam("cId") Long cId, @RequestHeader("Authorization") String token){
         try {
-            return new ResponseEntity<>(categoriesService.deleteCategoriesById(cId), HttpStatus.OK);
+            return new ResponseEntity<>(categoriesService.deleteCategoriesById(cId,token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
     @PutMapping("/updateIsactive")
-    public ResponseEntity<Map<String,Object>> updateIsactive(@RequestParam("cId") Long cId){
+    public ResponseEntity<Map<String,Object>> updateIsactive(@RequestParam("cId") Long cId, @RequestHeader("Authorization") String token){
         try {
-            return new ResponseEntity<>(categoriesService.updateIsactive(cId), HttpStatus.OK);
+            return new ResponseEntity<>(categoriesService.updateIsactive(cId,token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
     @GetMapping("/searchCategory")
-    public ResponseEntity<Map<String, Object>> search(@RequestParam("Text") String Text) {
+    public ResponseEntity<Map<String, Object>> search(@RequestParam("Text") String Text, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(categoriesService.search(Text), HttpStatus.OK);
+            return new ResponseEntity<>(categoriesService.search(Text,token), HttpStatus.OK);
         } catch (Exception e) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -81,9 +81,9 @@ public class CategoriesController {
     }
 
     @PostMapping("/getCategoryList")
-    public ResponseEntity<Map<String, Object>> getUser(@RequestBody CategoryListDTO categoryListDTO) {
+    public ResponseEntity<Map<String, Object>> getUser(@RequestBody CategoryListDTO categoryListDTO, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(categoriesService.getUser(categoryListDTO), HttpStatus.OK);
+            return new ResponseEntity<>(categoriesService.getUser(categoryListDTO,token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"data not fetched");
         }

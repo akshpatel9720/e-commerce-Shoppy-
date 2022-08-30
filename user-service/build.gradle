@@ -48,6 +48,8 @@ dependencies {
 
     testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.7.3'
 
+    implementation group: 'com.stripe', name: 'stripe-java', version: '20.109.0'
+
 
 }
 
