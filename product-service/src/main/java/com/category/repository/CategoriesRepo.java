@@ -18,6 +18,6 @@ public interface CategoriesRepo extends JpaRepository<CategoryEntity, Long> {
     @Query("SELECT u FROM CategoryEntity u where " + "u.categoryName LIKE CONCAT('%',:Text,'%')")
     List<CategoryEntity> search(String Text);
 
-    @Query("select u from CartEntity u where u.isActive = :status and u.userId = :userId order by u.createdAt desc")
+    @Query("select u from CategoryEntity u where u.isActive = :status  order by u.createdAt desc")
     Page<CategoryEntity> findStatusAndUserId(Boolean status, Pageable pageable);
 }

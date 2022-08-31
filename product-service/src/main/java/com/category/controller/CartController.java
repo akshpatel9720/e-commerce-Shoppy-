@@ -28,15 +28,15 @@ public class CartController {
     }
 
     @DeleteMapping("/deleteAProduct")
-    public ResponseEntity<Map<String, Object>> deleteAProduct(@RequestBody CartDTO cartDTO, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<Map<String, Object>> deleteAProduct(@RequestParam("userId") Long userId, @RequestParam("pId") String pId, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(cartService.deleteAProduct(cartDTO, token), HttpStatus.OK);
+            return new ResponseEntity<>(cartService.deleteAProduct(userId, pId, token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "data not deleted");
         }
     }
 
-    @DeleteMapping("/deleteAllProduct")
+    @PostMapping("/deleteAllProduct")
     public ResponseEntity<Map<String, Object>> deleteAllProduct(@RequestParam("userId") Long userId, @RequestHeader("Authorization") String token) {
         try {
             return new ResponseEntity<>(cartService.deleteAllProduct(userId, token), HttpStatus.OK);
@@ -45,10 +45,10 @@ public class CartController {
         }
     }
 
-    @PostMapping("/deleteSelectedProduct")
-    public ResponseEntity<Map<String, Object>> deleteSelectedProduct(@RequestBody CartDTO cartDTO, @RequestHeader("Authorization") String token) {
+    @DeleteMapping("/deleteSelectedProduct")
+    public ResponseEntity<Map<String, Object>> deleteSelectedProduct(@RequestParam("userId") Long userId, @RequestParam("pId") String pId, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(cartService.deleteSelectedProduct(cartDTO, token), HttpStatus.OK);
+            return new ResponseEntity<>(cartService.deleteSelectedProduct(userId, pId, token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "data not deleted");
         }

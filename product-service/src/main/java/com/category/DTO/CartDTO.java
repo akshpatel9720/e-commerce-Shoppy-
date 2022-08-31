@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ public class CartDTO {
     private Long id;
     private Long userId;
 
-    private List<String> pId;
+    private List<String> pId=new ArrayList<>();
     private String productQuantity;
 
     private Boolean isActive;

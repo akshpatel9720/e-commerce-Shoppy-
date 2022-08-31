@@ -61,10 +61,10 @@ public class CategoriesController {
         }
     }
 
-    @PutMapping("/updateIsactive")
-    public ResponseEntity<Map<String,Object>> updateIsactive(@RequestParam("cId") Long cId, @RequestHeader("Authorization") String token){
+    @PutMapping("/update")
+    public ResponseEntity<Map<String,Object>> updateIsactive(@RequestParam("cId") Long cId,@RequestBody CategoryDTO categoryDTO, @RequestHeader("Authorization") String token){
         try {
-            return new ResponseEntity<>(categoriesService.updateIsactive(cId,token), HttpStatus.OK);
+            return new ResponseEntity<>(categoriesService.update(cId,categoryDTO,token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

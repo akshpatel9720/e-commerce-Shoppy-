@@ -123,7 +123,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<String, Object> deleteCategoriesById(Long pId, String token) {
+    public Map<String, Object> deleteProductById(Long pId, String token) {
         Map<String, Object> map = new HashMap<>();
         ResponseDTO authReponse = authenticationService.isAuthenticated(token);
         if (authReponse.getStatus()) {

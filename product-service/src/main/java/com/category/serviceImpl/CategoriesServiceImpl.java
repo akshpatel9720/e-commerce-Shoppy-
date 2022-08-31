@@ -1,7 +1,6 @@
 package com.category.serviceImpl;
 
 import com.category.DTO.*;
-import com.category.entity.CartEntity;
 import com.category.entity.CategoryEntity;
 import com.category.repository.CategoriesRepo;
 import com.category.service.AuthenticationService;
@@ -132,8 +131,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         return map;
     }
 
-    @Override
-    public Map<String, Object> updateIsactive(Long cId, String token) {
+    public Map<String, Object> update(Long cId,CategoryDTO categoryDTO, String token) {
         Map<String, Object> map = new HashMap<>();
         ResponseDTO authReponse = authenticationService.isAuthenticated(token);
         if (authReponse.getStatus()) {
@@ -141,11 +139,13 @@ public class CategoriesServiceImpl implements CategoriesService {
             if (existCategoryIsActive.isPresent()) {
                 CategoryEntity categoryEntity = existCategoryIsActive.get();
                 if (categoryEntity.getIsActive().equals(Boolean.TRUE)) {
-                    categoryEntity.setIsActive(Boolean.FALSE);
+                    categoryEntity.setIsActive(categoryDTO.getIsActive());
                     categoryEntity.setUpdatedAt(LocalDateTime.now());
+                    categoryEntity.setCategoryName(categoryEntity.getCategoryName());
                 } else {
-                    categoryEntity.setIsActive(Boolean.TRUE);
+                    categoryEntity.setIsActive(categoryDTO.getIsActive());
                     categoryEntity.setUpdatedAt(LocalDateTime.now());
+                    categoryEntity.setCategoryName(categoryDTO.getCategoryName());
                 }
                 categoriesRepo.save(categoryEntity);
                 map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);

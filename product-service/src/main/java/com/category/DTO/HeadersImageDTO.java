@@ -1,6 +1,9 @@
 package com.category.DTO;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,9 +21,6 @@ public class HeadersImageDTO {
     private Long id;
     private String name;
     private String description;
-    private String img;
     private Long categoryId;
     private Boolean isActive;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

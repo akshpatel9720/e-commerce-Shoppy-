@@ -16,7 +16,7 @@ public interface CategoriesService {
 
     Map<String, Object> deleteCategoriesById(Long cId, String token);
 
-    Map<String, Object> updateIsactive(Long cId, String token);
+    Map<String, Object> update(Long cId, CategoryDTO categoryDTO, String token);
 
     Map<String, Object> search(String Text, String token);
 

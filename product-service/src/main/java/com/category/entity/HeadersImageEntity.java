@@ -21,7 +21,7 @@ public class HeadersImageEntity {
     private Long id;
     private String name;
     private String description;
-    private String img;
+    private String imgUrl;
     private Long categoryId;
     private Boolean isActive;
     private LocalDateTime createdAt;

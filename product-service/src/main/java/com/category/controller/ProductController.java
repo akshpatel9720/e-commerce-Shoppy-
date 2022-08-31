@@ -1,10 +1,7 @@
 package com.category.controller;
 
-import com.category.DTO.CartListDTO;
 import com.category.DTO.ProductDTO;
 import com.category.DTO.ProductListDTO;
-import com.category.entity.CategoryEntity;
-import com.category.entity.ProductEntity;
 import com.category.exception.ProductException;
 import com.category.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +49,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/deleteProductById")
-    public ResponseEntity<Map<String, Object>> deleteCategoriesById(@RequestParam("pId") Long pId, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<Map<String, Object>> deleteProductById(@RequestParam("pId") Long pId, @RequestHeader("Authorization") String token) {
         try {
-            return new ResponseEntity<>(productService.deleteCategoriesById(pId, token), HttpStatus.OK);
+            return new ResponseEntity<>(productService.deleteProductById(pId, token), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

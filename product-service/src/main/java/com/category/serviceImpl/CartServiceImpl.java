@@ -40,9 +40,7 @@ public class CartServiceImpl implements CartService {
                 addToCart.setUserId(cartDTO.getUserId());
                 addToCart.setCreatedAt(LocalDateTime.now());
                 addToCart.setIsActive(Boolean.TRUE);
-                for (String pId : cartDTO.getPId()) {
-                    addToCart.setPId(String.join(",", pId));
-                }
+                addToCart.setPId(String.join(",", cartDTO.getPId()));
                 addToCart.setProductQuantity(cartDTO.getProductQuantity());
                 cartRepo.save(addToCart);
                 map.put("status", "200");
@@ -62,15 +60,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Map<String, Object> deleteAProduct(CartDTO cartDTO, String token) {
+    public Map<String, Object> deleteAProduct(Long userId, String pId, String token) {
         Map<String, Object> map = new HashMap<>();
         ResponseDTO authReponse = authenticationService.isAuthenticated(token);
         if (authReponse.getStatus()) {
-            if (cartDTO != null) {
-                Optional<CartEntity> cartEntity = cartRepo.findProduct(cartDTO.getUserId(), cartDTO.getPId());
-                CartEntity deleteProductByPId = cartEntity.get();
-                if (cartEntity != null) {
-                    cartRepo.delete(deleteProductByPId);
+            if (userId != null && pId != null) {
+                Optional<CartEntity> cartEntity = cartRepo.findByuserIdandpId(userId, pId);
+                if (cartEntity.isPresent()) {
+//                    CartEntity deleteProductByPId = cartEntity.get();
+                    cartRepo.delete(cartEntity.get());
                     map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
                     map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_DELETE_SUCCESSFULLY);
                     map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
@@ -97,9 +95,9 @@ public class CartServiceImpl implements CartService {
         Map<String, Object> map = new HashMap<>();
         ResponseDTO authReponse = authenticationService.isAuthenticated(token);
         if (authReponse.getStatus()) {
-            Optional<CartEntity> cartEntity = cartRepo.findById(userId);
-            if (cartEntity.isPresent()) {
-                cartRepo.deleteById(userId);
+            List<CartEntity> cartEntity = cartRepo.findByUserId(userId);
+            if (cartEntity.size() > 0) {
+                cartRepo.deleteByUserId(userId);
                 map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
                 map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_DELETE_SUCCESSFULLY);
                 map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
@@ -117,15 +115,15 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Map<String, Object> deleteSelectedProduct(CartDTO cartDTO, String token) {
+    public Map<String, Object> deleteSelectedProduct(Long userId, String pId, String token) {
         Map<String, Object> map = new HashMap<>();
         ResponseDTO authReponse = authenticationService.isAuthenticated(token);
         if (authReponse.getStatus()) {
-            if (cartDTO != null) {
-                Optional<CartEntity> cartEntity = cartRepo.findProduct(cartDTO.getUserId(), cartDTO.getPId());
-                CartEntity deleteProductByPId = cartEntity.get();
-                if (cartEntity != null) {
-                    cartRepo.delete(deleteProductByPId);
+            if (userId != null && pId != null) {
+                Optional<CartEntity> cartEntity = cartRepo.findByuserIdandpId(userId, pId);
+//                CartEntity deleteProductByPId = cartEntity.get();
+                if (cartEntity.isPresent()) {
+                    cartRepo.delete(cartEntity.get());
                     map.put(ResponseMessage.RESPONSE_STATUS, ResponseMessage.STATUS_200);
                     map.put(ResponseMessage.RESPONSE_MESSAGE, ResponseMessage.DATA_DELETE_SUCCESSFULLY);
                     map.put(ResponseMessage.RESPONSE_DATA, new ArrayList<>());
