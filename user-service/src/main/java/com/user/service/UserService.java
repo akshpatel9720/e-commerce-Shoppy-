@@ -7,15 +7,15 @@ import java.util.Map;
 
 public interface UserService {
 
-    Map<String, Object> getById(Long id);
+    Map<String, Object> getById(Long id, String authToken);
 
-    Map<String, Object> update(UserEntity userEntity);
+    Map<String, Object> update(UserEntity userEntity, String authToken);
 
-    Map<String, Object> delete(Long id);
+    Map<String, Object> delete(Long id, String authToken);
 
-    Map<String, Object> updateEmail(Long id, String oldEmail, String newEmail);
+    Map<String, Object> updateEmail(Long id, String oldEmail, String newEmail, String authToken);
 
-    Map<String, Object> getUser(UserListDTO userListDTO);
+    Map<String, Object> getUser(UserListDTO userListDTO, String authToken);
 
     Map<String, Object> getAllUser(String authToken);
 }

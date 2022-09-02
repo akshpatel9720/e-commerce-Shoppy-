@@ -107,9 +107,7 @@ public class HeadersImageServiceImpl implements HeadersImageService {
         ResponseDTO authReponse = authenticationService.isAuthenticated(token);
         if (authReponse.getStatus()) {
             Optional<HeadersImageEntity> existHeader = headersImageRepo.findById(id);
-
             if (existHeader.isPresent()) {
-                System.out.println("11111111111111111111111111111");
                 HeadersImageEntity headersImage = existHeader.get();
                 Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap("cloud_name", ResponseMessage.CLOUD_NAME,
                         "api_key", ResponseMessage.API_KEY, "api_secret", ResponseMessage.API_SECRET));

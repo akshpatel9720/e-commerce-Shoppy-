@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     EmailService emailService;
 
     @Override
-    public Map<String, Object> getById(Long id) {
+    public Map<String, Object> getById(Long id,String authToken) {
         Map<String, Object> map = new HashMap<>();
         Optional<UserEntity> user1 = userRepository.findById(id);
         if (user1.isPresent()) {
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> update(UserEntity userEntity) {
+    public Map<String, Object> update(UserEntity userEntity,String authToken) {
         Map<String, Object> map = new HashMap<>();
         Optional<UserEntity> existingUserEntity = userRepository.findById(userEntity.getId());
         if (existingUserEntity.isPresent()) {
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> delete(Long id) {
+    public Map<String, Object> delete(Long id,String authToken) {
         Map<String, Object> map = new HashMap<>();
         Optional<UserEntity> user = userRepository.findById(id);
         if (user.isPresent()) {
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> updateEmail(Long id, String oldEmail, String newEmail) {
+    public Map<String, Object> updateEmail(Long id, String oldEmail, String newEmail,String authToken) {
         Map<String, Object> map = new HashMap<>();
         Optional<UserEntity> user = userRepository.findById(id);
         if (user.isPresent()) {
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Map<String, Object> getUser(UserListDTO userListDTO) {
+    public Map<String, Object> getUser(UserListDTO userListDTO,String authToken) {
         Map<String, Object> map = new HashMap<>();
         Boolean status = Boolean.valueOf(userListDTO.getWhere().get("isActive").toString());
         Integer page = Integer.valueOf(userListDTO.getPagination().get("page").toString());

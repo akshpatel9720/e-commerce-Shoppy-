@@ -19,18 +19,18 @@ public class UserController {
 
 
     @GetMapping("/getById")
-    public ResponseEntity<Map<String, Object>> getById(@RequestParam("id") Long id) {
+    public ResponseEntity<Map<String, Object>> getById(@RequestParam("id") Long id, @RequestHeader("Authorization") String authToken) {
         try {
-            return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
+            return new ResponseEntity<>(userService.getById(id,authToken), HttpStatus.OK);
         } catch (Exception e) {
             throw new UserException.GetUserByIdHandler("data does not fetch");
         }
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<Map<String, Object>> update(@RequestBody UserEntity userEntity) {
+    public ResponseEntity<Map<String, Object>> update(@RequestBody UserEntity userEntity, @RequestHeader("Authorization") String authToken) {
         try {
-            return new ResponseEntity<>(userService.update(userEntity), HttpStatus.OK);
+            return new ResponseEntity<>(userService.update(userEntity,authToken), HttpStatus.OK);
         } catch (Exception e) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new UserException.UpdateHandler("data is not update");
@@ -38,9 +38,9 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Map<String, Object>> delete(@RequestParam("id") Long id) {
+    public ResponseEntity<Map<String, Object>> delete(@RequestParam("id") Long id, @RequestHeader("Authorization") String authToken) {
         try {
-            return new ResponseEntity<>(userService.delete(id), HttpStatus.OK);
+            return new ResponseEntity<>(userService.delete(id,authToken), HttpStatus.OK);
         } catch (Exception e) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new UserException.DeleteHandler("data does not delete");
@@ -48,9 +48,9 @@ public class UserController {
     }
 
     @PostMapping("/updateEmail")
-    public ResponseEntity<Map<String, Object>> updateEmail(@RequestParam("id") Long id, @RequestParam("oldemail") String oldEmail, @RequestParam("newemail") String newEmail) {
+    public ResponseEntity<Map<String, Object>> updateEmail(@RequestParam("id") Long id, @RequestParam("oldemail") String oldEmail, @RequestParam("newemail") String newEmail, @RequestHeader("Authorization") String authToken) {
         try {
-            return new ResponseEntity<>(userService.updateEmail(id, oldEmail, newEmail), HttpStatus.OK);
+            return new ResponseEntity<>(userService.updateEmail(id, oldEmail, newEmail,authToken), HttpStatus.OK);
         } catch (Exception e) {
 //            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
             throw new UserException.UpdateEamilHandler("data is not update");
@@ -58,16 +58,16 @@ public class UserController {
     }
 
     @PostMapping("/getUser")
-    public ResponseEntity<Map<String, Object>> getUser(@RequestBody UserListDTO userListDTO) {
+    public ResponseEntity<Map<String, Object>> getUser(@RequestBody UserListDTO userListDTO, @RequestHeader("Authorization") String authToken) {
         try {
-            return new ResponseEntity<>(userService.getUser(userListDTO), HttpStatus.OK);
+            return new ResponseEntity<>(userService.getUser(userListDTO,authToken), HttpStatus.OK);
         } catch (Exception e) {
             throw new UserException.getAllUser("data is not fetched");
         }
     }
 
     @GetMapping("/getAllUser")
-    public ResponseEntity<Map<String, Object>> getAllUser(@RequestHeader("Authorization") String authToken) {
+    public ResponseEntity<Map<String, Object>> getAllUser( @RequestHeader("Authorization") String authToken    ) {
         try {
             return new ResponseEntity<>(userService.getAllUser(authToken), HttpStatus.OK);
         } catch (Exception e) {
